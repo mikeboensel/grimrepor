@@ -1,0 +1,28 @@
+services:
+  backend_processor:
+    image: backend_processor
+    build:
+      dockerfile: ./.devcontainer/backend_processor/Dockerfile
+
+  # tweet_bot:
+  #   image: tweet_bot
+  #   build:
+  #     dockerfile: ./.devcontainer/tweet_bot/Dockerfile
+
+  db:
+    image: mysql:8.0.40-debian
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: grim_db
+      MYSQL_USER: grim_user
+      MYSQL_PASSWORD: todo_replace_password
+    volumes:
+      - ./db/mysql-init/:/docker-entrypoint-initdb.d/ # Defines our Table structures
+      # - ./my.cnf:/etc/mysql/conf.d/my.cnf #Optional setup
+      - mysql_data:/var/lib/mysql # Persists our data
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql_data:
