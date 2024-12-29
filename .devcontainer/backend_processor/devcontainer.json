@@ -17,7 +17,10 @@
 
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python"]
+      "extensions": ["ms-python.python"],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python3.12"
+      }
     }
   },
 
