@@ -1,27 +1,32 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
-	"name": "Tweet Bot",
-	// More info: https://containers.dev/guide/dockerfile
-	"dockerComposeFile": ["../../docker-compose.yml"],
-	"service": "tweet_bot",
-	"shutdownAction": "none",
+  "name": "Tweet Bot",
+  // More info: https://containers.dev/guide/dockerfile
+  "dockerComposeFile": ["../../docker-compose.yml"],
+  "service": "tweet_bot",
+  "shutdownAction": "none",
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	"features": {
-	},
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"]
+    }
+  },
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
 
-	// Configure tool-specific properties.
-	// "customizations": {},
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "pip3 install --user -r requirements.txt",
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  // Configure tool-specific properties.
+  // "customizations": {},
 
-	"workspaceFolder": "/app"
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+
+  "workspaceFolder": "/app"
 }
