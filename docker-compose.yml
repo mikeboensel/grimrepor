@@ -21,11 +21,8 @@ services:
   db:
     image: mysql:8.0.40-debian
     container_name: mysql_container
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: grim_db
-      MYSQL_USER: grim_user
-      MYSQL_PASSWORD: todo_replace_password
+    env_file:
+      - .env
     volumes:
       - ./db/mysql-init/:/docker-entrypoint-initdb.d/ # Defines our Table structures
       # - ./my.cnf:/etc/mysql/conf.d/my.cnf #Optional setup
