@@ -4,6 +4,8 @@ services:
     container_name: backend_processor
     build:
       dockerfile: ./.devcontainer/backend_processor/Dockerfile
+    env_file:
+      - .env
     volumes:
       - ./scripts/:/app/ # Bring in our code + allow changes to persist back
 
@@ -13,6 +15,8 @@ services:
     container_name: tweet_bot
     build:
       dockerfile: ./.devcontainer/tweet_bot/Dockerfile
+    env_file:
+      - .env
     volumes:
       - ./scripts/:/app/ # Bring in our code + allow changes to persist back
 
@@ -25,7 +29,7 @@ services:
       - .env
     volumes:
       - ./db/mysql-init/:/docker-entrypoint-initdb.d/ # Defines our Table structures
-      # - ./my.cnf:/etc/mysql/conf.d/my.cnf #Optional setup
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf #Optional setup
       - mysql_data:/var/lib/mysql # Persists our data
     ports:
       - "3306:3306"
