@@ -6,7 +6,7 @@ import pandas as pd
 # Search term for the repository
 REPO_NAME = "huggingface/transformers"  # replace with your repository search term
 SEARCH_URL = f"https://api.github.com/search/repositories?q={REPO_NAME}"
-ROOT = subprocess.check_output("git rev-parse --show-toplevel", shell=True).decode('utf-8').strip()
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # Optional: Use your GitHub token for higher rate limits
 # HEADERS = {

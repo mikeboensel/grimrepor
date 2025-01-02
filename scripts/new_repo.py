@@ -1,11 +1,10 @@
-
 import os
 import subprocess
 import shutil
 import requests
 import pandas as pd
 
-ROOT = subprocess.check_output("git rev-parse --show-toplevel", shell=True).decode('utf-8').strip()
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # GitHub API URL for creating repositories
 GITHUB_API_URL = "https://api.github.com/user/repos"
@@ -116,6 +115,10 @@ for repo, status in repos_list:
         subprocess.run(["git", "remote", "remove", "origin"], check=True)
         subprocess.run(["git", "remote", "add", "origin", new_repo_url], check=True)
         subprocess.run(["git", "push", "origin", "main"], check=True)
+
+    # After all repository operations, purge pip cache
+    subprocess.run(["pip", "cache", "purge"], check=True)
+    print("Pip cache purged successfully")
 
 os.chdir(ROOT)
 print("All repositories processed successfully.")

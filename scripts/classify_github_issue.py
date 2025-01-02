@@ -31,7 +31,7 @@ def classify_issues(df):
     df['is_version_issue'] = df.apply(check_issue, axis=1)
     return df
 
-ROOT = subprocess.check_output("git rev-parse --show-toplevel", shell=True).decode('utf-8').strip()
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 file_issues = os.path.join(ROOT, "output", "issues.csv")
 df  = pd.read_csv(file_issues)

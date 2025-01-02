@@ -69,21 +69,16 @@ Over time, dependencies fall apart, versions get cranky, and your code starts ga
 
 ## Setup
 
-### Create and activate a virtual environment:
+### Create and activate the virtual environment:
 
-Create virtual environment
+Create the virtual environment (installs `requirements.txt`)
 ```bash
-python3.12 -m venv venv
+./scripts/create_venv.sh
 ```
 
-Activate virtual environment
+Activate the virtual environment
 ```bash
 source venv/bin/activate
-```
-
-Install required packages:
-```bash
-(venv) pip install -r requirements.txt
 ```
 
 Run python script(s)
