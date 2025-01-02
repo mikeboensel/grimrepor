@@ -25,7 +25,7 @@ source venv/bin/activate
 load_dotenv()
 
 # Database configuration
-DATABASE_NAME = os.getenv('DATABASE_NAME') or "grimrepor_db"
+DATABASE_NAME = os.getenv('MYSQL_DATABASE') or "grimrepor_db"
 MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
 MYSQL_USER = os.getenv('MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
@@ -109,7 +109,7 @@ def spinup_mysql_server() -> bool:
     # Verify server started successfully
     return is_mysql_running()
 
-def create_session(db_name: str = os.getenv('DATABASE_NAME')) -> object:
+def create_session(db_name: str = os.getenv('MYSQL_DATABASE')) -> object:
     """
     create mysql server session
     can create a database without giving db_name

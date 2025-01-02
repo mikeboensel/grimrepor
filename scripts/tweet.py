@@ -95,7 +95,7 @@ async def main(
         github_fork_url = args.github_fork_url or github_fork_url
 
     # ** do not continue if the record in the database is already marked as tweeted **
-    DATABASE_NAME = os.getenv('DATABASE_NAME') or "grimrepor_db"
+    DATABASE_NAME = os.getenv("MYSQL_DATABASE") or "grimrepor_db"
     TABLE_NAME = os.getenv('TABLE_NAME') or "papers_and_code"
 
     # Create a session
@@ -181,7 +181,7 @@ def update_table_in_db(github_url: str, tweet_posted: bool, tweet_url: str, tabl
     tweet_posted           | tinyint(1)   | 1 for true (tweet posted)
     tweet_url              | varchar(255)
     """
-    DATABASE_NAME = os.getenv('DATABASE_NAME') or "grimrepor_db"
+    DATABASE_NAME = os.getenv("MYSQL_DATABASE") or "grimrepor_db"
     TABLE_NAME = os.getenv('TABLE_NAME') or table_name
 
     # Create a session

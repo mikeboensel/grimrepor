@@ -32,7 +32,8 @@ services:
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf #Optional setup
       - mysql_data:/var/lib/mysql # Persists our data
     ports:
-      - "3306:3306"
+      - "3306:3306" #MYSQL
+      - "33060:33060" #MYSQL X protocol
 
 
   website:
