@@ -31,7 +31,7 @@ from utils.decorators import timeit
 load_dotenv()
 
 # Database configuration
-DATABASE_NAME = os.getenv('MYSQL_DATABASE') or "grimrepor_db"
+MYSQL_DATABASE = os.getenv('MYSQL_DATABASE') or "grimrepor_db"
 MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
 MYSQL_USER = os.getenv('MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
@@ -970,9 +970,9 @@ if __name__ == '__main__':
 
     show_databases()
     if not is_docker():
-        create_db(db_name=DATABASE_NAME) # do once
-        show_all_tables(db_name=DATABASE_NAME)
-        drop_all_tables(db_name=DATABASE_NAME) # for testing
+        create_db(db_name=MYSQL_DATABASE) # do once
+        show_all_tables(db_name=MYSQL_DATABASE)
+        drop_all_tables(db_name=MYSQL_DATABASE) # for testing
 
     # have function to populate the table from each data source
     # FIND      first 5 cols from 'links-between-papers-and-code.json'
@@ -982,9 +982,9 @@ if __name__ == '__main__':
     # PUBLISH   git fork, git clone, git push, git pull request, tweet
     # # import function into another file to do the cell updates...
 
-    papers_and_code = Table(table_name=TABLE_NAME, db_name=DATABASE_NAME)
+    papers_and_code = Table(table_name=TABLE_NAME, db_name=MYSQL_DATABASE)
     papers_and_code.create_table_full()
-    show_table_columns(table_name=TABLE_NAME, db_name=DATABASE_NAME)
+    show_table_columns(table_name=TABLE_NAME, db_name=MYSQL_DATABASE)
     # 185,000 new rows of 272,000 possible \/
     # sequential took 158 seconds on M3 Max MBP with 14 cores, 96GB RAM
     # sequential took 459 seconds on 2x Xeon E5-2699 v4 server with 44 cores, 256GB RAM
@@ -992,7 +992,7 @@ if __name__ == '__main__':
     # parallel took 23 seconds on M3 Max MBP with 14 cores, 96GB RAM
     # parallel took 40 seconds on 2x Xeon E5-2699 v4 server with 44 cores, 256GB RAM
     papers_and_code.populate_table_from_papers_and_code_json_parallel()
-    show_table_contents(table_name=TABLE_NAME, db_name=DATABASE_NAME, limit_num=row_limit_view)
+    show_table_contents(table_name=TABLE_NAME, db_name=MYSQL_DATABASE, limit_num=row_limit_view)
 
     # given the 5000 github api call limit per hour, row limit is set here
     # 1000 insertions
@@ -1000,15 +1000,15 @@ if __name__ == '__main__':
     # took 920 seconds on 2x Xeon E5-2699 v4 server
     papers_and_code.populate_table_from_github_repo_sequential(row_limit=row_limit_parse)
     # TODO: parallelize github fetching code
-    show_table_contents(table_name=TABLE_NAME, db_name=DATABASE_NAME, limit_num=row_limit_view)
+    show_table_contents(table_name=TABLE_NAME, db_name=MYSQL_DATABASE, limit_num=row_limit_view)
 
     # build, fix, publish columns not filled in with this script (yet)
 
-    show_all_tables(db_name=DATABASE_NAME)
+    show_all_tables(db_name=MYSQL_DATABASE)
 
 
 """
 use a .env file at the root of the project see (.env.example) with the following:
-MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, GITHUB_TOKEN, DATABASE_NAME
+MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, GITHUB_TOKEN, MYSQL_DATABASE
 (venv) python3 database/database_cmds.py
 """

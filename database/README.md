@@ -24,7 +24,7 @@ MYSQL_PASSWORD=''
 MYSQL_ROOT_PASSWORD='non_blank_pw'  
 GITHUB_TOKEN=your_github_token  
 OPENAI_API_KEY=api_key  
-DATABASE_NAME='grimrepor_db'  
+MYSQL_DATABASE='grimrepor_db'  
 ```
 
 ## Table Schema
