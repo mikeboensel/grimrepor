@@ -19,6 +19,7 @@ services:
       - .env
     volumes:
       - ./scripts/:/app/ # Bring in our code + allow changes to persist back
+      - ./utils/:/app/utils/ 
 
 
 

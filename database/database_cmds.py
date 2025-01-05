@@ -13,6 +13,7 @@ import math
 from datetime import datetime
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from utils.env import is_docker
 
 """
 To run:
@@ -33,7 +34,11 @@ MYSQL_PORT = int(os.getenv('MYSQL_PORT', 3306))
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if is_docker():
+    ROOT = "/app"
+else:
+    ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
 sys.path.append(ROOT)
 from utils.decorators import timeit
 
@@ -876,19 +881,21 @@ if __name__ == '__main__':
     row_limit_view = 10
 
     # make sure mysql is installed and running
-    if not is_mysql_installed():
+    if not is_mysql_installed() and not is_docker():
         print("MySQL is not installed. Please run database/mysql_setup.sh to install MySQL.")
         sys.exit(1)
 
     print("Ensuring MySQL server is running...")
-    if not spinup_mysql_server():
+
+    if not spinup_mysql_server() and not is_docker():
         print("Failed to start MySQL server. Check system logs")
         sys.exit(1)
 
     show_databases()
-    create_db(db_name=DATABASE_NAME) # do once
-    show_all_tables(db_name=DATABASE_NAME)
-    drop_all_tables(db_name=DATABASE_NAME) # for testing
+    if not is_docker():
+        create_db(db_name=DATABASE_NAME) # do once
+        show_all_tables(db_name=DATABASE_NAME)
+        drop_all_tables(db_name=DATABASE_NAME) # for testing
 
     # have function to populate the table from each data source
     # FIND      first 5 cols from 'links-between-papers-and-code.json'
