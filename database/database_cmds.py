@@ -13,6 +13,7 @@ import math
 from datetime import datetime
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from utils.env import is_docker
 
 """
 To run:
@@ -30,7 +31,7 @@ from utils.decorators import timeit
 load_dotenv()
 
 # Database configuration
-DATABASE_NAME = os.getenv('DATABASE_NAME') or "grimrepor_db"
+DATABASE_NAME = os.getenv('MYSQL_DATABASE') or "grimrepor_db"
 MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
 MYSQL_USER = os.getenv('MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
@@ -38,6 +39,15 @@ MYSQL_PORT = int(os.getenv('MYSQL_PORT', 33060))
 
 TABLE_NAME = "papers_and_code"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
+if is_docker():
+    ROOT = "/app"
+else:
+    ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+sys.path.append(ROOT)
+from utils.decorators import timeit
+
 OS = sys.platform
 
 
@@ -143,7 +153,8 @@ def initialize_mysql() -> bool:
     print("MySQL server is ready for use.")
     return True
 
-def create_session(db_name: str = None) -> object:
+
+def create_session(db_name: str = os.getenv('MYSQL_DATABASE')) -> object:
     """
     create mysql server session
     can create a database without giving db_name
@@ -946,11 +957,22 @@ if __name__ == '__main__':
     row_limit_view = 10
 
     # make sure mysql is installed and running
-    initialize_mysql()
-    create_db(db_name=DATABASE_NAME) # do once
+
+    if not is_mysql_installed() and not is_docker():
+        print("MySQL is not installed. Please run database/mysql_setup.sh to install MySQL.")
+        sys.exit(1)
+
+    print("Ensuring MySQL server is running...")
+
+    if not spinup_mysql_server() and not is_docker():
+        print("Failed to start MySQL server. Check system logs")
+        sys.exit(1)
+
     show_databases()
-    show_all_tables(db_name=DATABASE_NAME)
-    drop_all_tables(db_name=DATABASE_NAME) # for testing
+    if not is_docker():
+        create_db(db_name=DATABASE_NAME) # do once
+        show_all_tables(db_name=DATABASE_NAME)
+        drop_all_tables(db_name=DATABASE_NAME) # for testing
 
     # have function to populate the table from each data source
     # FIND      first 5 cols from 'links-between-papers-and-code.json'
