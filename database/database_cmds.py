@@ -964,10 +964,6 @@ if __name__ == '__main__':
 
     print("Ensuring MySQL server is running...")
 
-    if not spinup_mysql_server() and not is_docker():
-        print("Failed to start MySQL server. Check system logs")
-        sys.exit(1)
-
     show_databases()
     if not is_docker():
         create_db(db_name=MYSQL_DATABASE) # do once
