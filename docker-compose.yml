@@ -18,8 +18,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./scripts/:/app/ # Bring in our code + allow changes to persist back
-      - ./utils/:/app/utils/ 
+      - ./tweet_bot/:/app/ # Bring in our code + allow changes to persist back
+      - ./utils/:/app/utils/
+      - ./database:/app/database/
 
 
 

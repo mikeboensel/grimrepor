@@ -145,7 +145,7 @@ async def main(
     print(f"Tweet content to be posted:\n{TWEET_TEXT=}\n")
     logging.info(f'{TWEET_TEXT=}\n')
 
-    await asyncio.sleep(10)
+    await asyncio.sleep(1)
 
     x_response, tweet_id = None, None
     try:
@@ -162,7 +162,7 @@ async def main(
         return
 
     if x_response is not None:
-        tweet_id = x_response.data.id if x_response.data.id is not None else None
+        tweet_id = x_response.data['id'] if x_response.data['id'] is not None else None
 
     tweet_url = f"https://x.com/GrimRepor/status/{tweet_id}"
     print(f"Tweet posted successfully!\n{tweet_url}\n")
