@@ -1,0 +1,7 @@
+# Ignore all files
+**
+
+# Except specific files
+!Dockerfile
+!requirements.txt
+!tweet.py

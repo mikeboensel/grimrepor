@@ -95,11 +95,11 @@ async def main(
         github_fork_url = args.github_fork_url or github_fork_url
 
     # ** do not continue if the record in the database is already marked as tweeted **
-    DATABASE_NAME = os.getenv("MYSQL_DATABASE") or "grimrepor_db"
+    MYSQL_DATABASE = os.getenv("MYSQL_DATABASE") or "grimrepor_db"
     TABLE_NAME = os.getenv('TABLE_NAME') or "papers_and_code"
 
     # Create a session
-    session, schema = create_session(db_name=DATABASE_NAME)
+    session, schema = create_session(db_name=MYSQL_DATABASE)
     cmd_check_record = f"""
     SELECT tweet_posted
     FROM {TABLE_NAME}
@@ -162,7 +162,7 @@ async def main(
         return
 
     if x_response is not None:
-        tweet_id = x_response.data.id if x_response.data.id is not None else None
+        tweet_id = x_response.data['id'] if x_response.data['id'] is not None else None
 
     tweet_url = f"https://x.com/GrimRepor/status/{tweet_id}"
     print(f"Tweet posted successfully!\n{tweet_url}\n")
@@ -181,11 +181,11 @@ def update_table_in_db(github_url: str, tweet_posted: bool, tweet_url: str, tabl
     tweet_posted           | tinyint(1)   | 1 for true (tweet posted)
     tweet_url              | varchar(255)
     """
-    DATABASE_NAME = os.getenv("MYSQL_DATABASE") or "grimrepor_db"
+    MYSQL_DATABASE = os.getenv("MYSQL_DATABASE") or "grimrepor_db"
     TABLE_NAME = os.getenv('TABLE_NAME') or table_name
 
     # Create a session
-    session, schema = create_session(db_name=DATABASE_NAME)
+    session, schema = create_session(db_name=MYSQL_DATABASE)
     tweet_posted = 1 if tweet_posted else 0
 
     # Update the table with the tweet URL
