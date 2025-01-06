@@ -40,7 +40,7 @@ else:
 MYSQL_USER = os.getenv('MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
 MYSQL_PORT = int(os.getenv('MYSQL_PORT', 33060))
-MYSQL_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', 'no_pw_provided_no_login_allowed' + str(random.randint(0, 9999999999))) #Don't allow any login if we didn't set a root PW (dangerous otherwise)
+MYSQL_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', '')
 
 TABLE_NAME = "papers_and_code"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -986,6 +986,7 @@ if __name__ == '__main__':
     papers_and_code = Table(table_name=TABLE_NAME, db_name=MYSQL_DATABASE)
     papers_and_code.create_table_full()
     show_table_columns(table_name=TABLE_NAME, db_name=MYSQL_DATABASE)
+
     # 185,000 new rows of 272,000 possible \/
     # sequential took 158 seconds on M3 Max MBP with 14 cores, 96GB RAM
     # sequential took 459 seconds on 2x Xeon E5-2699 v4 server with 44 cores, 256GB RAM
@@ -1002,7 +1003,6 @@ if __name__ == '__main__':
     papers_and_code.populate_table_from_github_repo_sequential(row_limit=row_limit_parse)
     # TODO: parallelize github fetching code
     show_table_contents(table_name=TABLE_NAME, db_name=MYSQL_DATABASE, limit_num=row_limit_view)
-
     # build, fix, publish columns not filled in with this script (yet)
 
     show_all_tables(db_name=MYSQL_DATABASE)
