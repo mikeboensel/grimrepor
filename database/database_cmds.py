@@ -13,8 +13,7 @@ import math
 from datetime import datetime
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from utils.env import is_docker
-
+import random
 """
 To run:
 ./setup/create_venv.sh
@@ -26,16 +25,22 @@ source venv/bin/activate
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(ROOT)
 
+from utils.env import is_docker
 from utils.decorators import timeit
 
 load_dotenv()
 
 # Database configuration
 MYSQL_DATABASE = os.getenv('MYSQL_DATABASE') or "grimrepor_db"
-MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
+if is_docker():
+    MYSQL_HOST="db"
+else:
+    MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
+
 MYSQL_USER = os.getenv('MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
 MYSQL_PORT = int(os.getenv('MYSQL_PORT', 33060))
+MYSQL_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', 'no_pw_provided_no_login_allowed' + str(random.randint(0, 9999999999))) #Don't allow any login if we didn't set a root PW (dangerous otherwise)
 
 TABLE_NAME = "papers_and_code"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
