@@ -145,7 +145,7 @@ async def main(
     print(f"Tweet content to be posted:\n{TWEET_TEXT=}\n")
     logging.info(f'{TWEET_TEXT=}\n')
 
-    await asyncio.sleep(1)
+    await asyncio.sleep(10)
 
     x_response, tweet_id = None, None
     try:
