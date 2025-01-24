@@ -4,6 +4,7 @@ services:
     container_name: backend_processor
     build:
       dockerfile: ./.devcontainer/backend_processor/Dockerfile
+      target: dev #prod #dev
     env_file:
       - .env
     environment:
@@ -17,6 +18,7 @@ services:
     container_name: tweet_bot
     build:
       dockerfile: ./.devcontainer/tweet_bot/Dockerfile
+      target: dev #prod #dev
     env_file:
       - .env
     environment:
@@ -25,7 +27,6 @@ services:
       - ./tweet_bot/:/app/ # Bring in our code + allow changes to persist back
       - ./utils/:/app/utils/
       - ./database:/app/database/
-
 
 
   db:
@@ -49,6 +50,7 @@ services:
     container_name: website
     build:
       dockerfile: ./.devcontainer/website/Dockerfile
+      target: dev #prod #dev
     environment:
       - USING_DOCKER=true
     # volumes:
