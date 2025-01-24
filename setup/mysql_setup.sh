@@ -1,4 +1,4 @@
-setup/mysql_setup.sh#!/bin/bash
+#!/bin/bash
 
 set -e
 echo
